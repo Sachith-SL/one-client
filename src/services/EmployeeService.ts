@@ -5,7 +5,7 @@ import axiosInstance from "../api/axiosinstance"
 export const getAllEmployees = () => {
   return axiosInstance.get(`/employee`)
   .then((response: any) => {
-    return response.data;
+    return response.data.data.content;
     })
     .catch((error: any) => {
         console.error("Error fetching employees:", error);
@@ -17,7 +17,7 @@ export const getAllEmployees = () => {
 export const getEmployeeById = async (id: number) => {
   try {
         const response = await axiosInstance.get(`/employee/${id}`);
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error(`Error fetching employee with id ${id}:`, error);
         throw error;

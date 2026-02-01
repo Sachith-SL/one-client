@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getEmployeeById, updateEmployee } from "../services/EmployeeService";
 import type { Employee } from "../types/Employee";
@@ -17,37 +17,27 @@ function EmployeeDetail() {
     try {
       const fetchDepartments = async () => {
         const res = await getAllDepartments();
-        setDepartments(res.data);
+        setDepartments(res);
       };
 
-      const fetchData = async () => {
+      const fetchEmployee = async () => {
         const data = await getEmployeeById(id as any);
-        setEmployee(data.data);
+        setEmployee(data);
       };
 
       fetchDepartments();
-      fetchData();
+      fetchEmployee();
     } catch (error) {}
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     if (!employee) return;
 
     setEmployee({
       ...employee,
       [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleDepartmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!employee) return;
-
-    setEmployee({
-      ...employee,
-      department: {
-        ...employee.department,
-        id: Number(e.target.value),
-      },
     });
   };
 
@@ -88,9 +78,10 @@ function EmployeeDetail() {
         <div className="col-sm-10">
           <select
             className="form-control"
+            name="departmentId"
             disabled={readOnly}
-            value={employee?.department?.id || ""}
-            onChange={handleDepartmentChange}
+            value={employee?.departmentId}
+            onChange={handleChange}
           >
             <option value="">-- Select Department --</option>
             {departments.map((dept) => (

@@ -1,33 +1,51 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Employee } from "../types/Employee";
 import { deleteEmployee, getAllEmployees } from "../services/EmployeeService";
+import { getAllDepartments } from "../services/DepartmentService";
+import type { Department } from "../types/Department";
 
 function EmployeeList() {
   const navigate = useNavigate();
   const [employeeList, setEmployeeList] = useState<Employee[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
 
   useEffect(() => {
     try {
-      const fetchData = async () => {
+      const fetchEmployeeData = async () => {
         const data = await getAllEmployees();
-        setEmployeeList(data.data);
+        setEmployeeList(data);
       };
-      fetchData();
+      const fetchDepartments = async () => {
+        const res = await getAllDepartments();
+        setDepartments(res);
+      };
+      fetchDepartments();
+      fetchEmployeeData();
     } catch (error) {}
   }, []);
 
-    const deleteEmp = async (id: number) => {
-      try {
-        await deleteEmployee(id);
-        alert("Employee deleted successfully");
-        // Refresh the employee list after deletion
-        const data = await getAllEmployees();
-        setEmployeeList(data.data);
-      } catch (error) {
-        alert("Error deleting employee");
-      }
-    };
+  const departmentMap = useMemo<Record<number, string>>(() => {
+    return departments.reduce(
+      (acc, dep) => {
+        acc[dep.id] = dep.name;
+        return acc;
+      },
+      {} as Record<number, string>,
+    );
+  }, [departments]);
+
+  const deleteEmp = async (id: number) => {
+    try {
+      await deleteEmployee(id);
+      alert("Employee deleted successfully");
+      // Refresh the employee list after deletion
+      const data = await getAllEmployees();
+      setEmployeeList(data);
+    } catch (error) {
+      alert("Error deleting employee");
+    }
+  };
 
   return (
     <>
@@ -49,10 +67,26 @@ function EmployeeList() {
             <tr key={employee.id}>
               <th scope="row">{employee.id}</th>
               <td>{employee.name}</td>
-              <td>{employee.department.name}</td>
+              <td>{departmentMap[employee.departmentId] ?? "N/A"}</td>
               <td>{employee.salary}</td>
-              <td><button className="btn btn-primary" onClick={() => navigate(`/employee/${employee.id}`)}>Details</button></td>
-              <td><button className="btn btn-danger" onClick={() => {deleteEmp(employee.id)}}>Delete</button></td>
+              <td>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => navigate(`/employee/${employee.id}`)}
+                >
+                  Details
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {
+                    deleteEmp(employee.id);
+                  }}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

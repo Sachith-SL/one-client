@@ -1,13 +1,14 @@
-import axiosInstance from "../api/axiosinstance"
+import axiosInstance from "../api/axiosinstance";
 
 //get all departments
 export const getAllDepartments = () => {
-  return axiosInstance.get(`/department`)
-  .then((response: any) => {
-    return response.data;
+  return axiosInstance
+    .get(`/department`)
+    .then((response: any) => {
+      return response.data.data;
     })
     .catch((error: any) => {
-        console.error("Error fetching departments:", error);
-        throw error;
+      console.error("Error fetching departments:", error);
+      throw error;
     });
 };
