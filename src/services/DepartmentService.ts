@@ -5,7 +5,7 @@ export const getAllDepartments = () => {
   return axiosInstance
     .get(`/department`)
     .then((response: any) => {
-      return response.data.data;
+      return response.data.data.content;
     })
     .catch((error: any) => {
       console.error("Error fetching departments:", error);
