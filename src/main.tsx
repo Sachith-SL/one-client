@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import EmployeeList from "./components/EmployeeList.tsx";
 import EmployeeDetail from "./components/EmployeeDetail.tsx";
 import CreateEmployee from "./components/CreateEmployee.tsx";
+import Login from "./components/Login.tsx";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/login",
+        element: <Login />,
+      },
+      {
         path: "/employee-list",
         element: <EmployeeList />,
       },
@@ -25,7 +30,7 @@ const router = createBrowserRouter([
         path: "/employee/:id",
         element: <EmployeeDetail />,
       },
-            {
+      {
         path: "/create-employee",
         element: <CreateEmployee />,
       },
