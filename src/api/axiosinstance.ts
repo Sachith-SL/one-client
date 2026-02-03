@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 
 export default axiosInstance;
 
-
+// Add a request interceptor to include the token in headers
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -23,7 +23,7 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-
+// Add a response interceptor to handle 401 errors
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

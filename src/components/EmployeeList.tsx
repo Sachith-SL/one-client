@@ -91,10 +91,6 @@ function EmployeeList() {
           ))}
         </tbody>
       </table>
-      <br></br>
-      <button className="btn btn-info" onClick={() => navigate("/")}>
-        Home
-      </button>
     </>
   );
 }

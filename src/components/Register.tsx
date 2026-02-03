@@ -1,36 +1,32 @@
 import { useState } from "react";
-import { login } from "../services/LoginService";
 import { useNavigate } from "react-router-dom";
+import { register } from "../services/RegisterService";
 
-function Login() {
+function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await login({ username, password });
-
-      // Store JWT
-      localStorage.setItem("token", response.token);
+      await register(username, password );
 
       // redirect or load protected page
-      alert("Login successful!");
+      alert("Registration successful!");
       navigate("/");
-    } catch (err: any) {
-      setError(err.response?.data?.status || "Login failed");
+    } catch (err) {
+        alert("Registration failed");
     }
   };
-
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2>Register</h2>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+
         <div className="mb-3">
           <label htmlFor="username" className="form-label">
             User Name
@@ -64,4 +60,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
