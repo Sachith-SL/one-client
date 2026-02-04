@@ -1,21 +1,25 @@
 import { useState } from "react";
-import { login } from "../services/LoginService";
+import { loginApi } from "../services/LoginService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await login({ username, password });
+      const response = await loginApi({ username, password });
 
       // Store JWT
-      localStorage.setItem("token", response.token);
+      // localStorage.setItem("token", response.token);
+
+      login(response.token);
 
       // redirect or load protected page
       alert("Login successful!");
