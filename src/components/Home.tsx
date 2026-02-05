@@ -21,19 +21,7 @@ function Home() {
 
   return (
     <div>
-      <h1>{loading ? "Loading..." : message}</h1>
-      <button
-        className="btn btn-info me-2"
-        onClick={() => navigate("/employee-list")}
-      >
-        Employee List
-      </button>
-      <button
-        className="btn btn-primary me-2"
-        onClick={() => navigate("/create-employee")}
-      >
-        Create New
-      </button>
+      <h1 className="text-center">{loading ? "Loading..." : message}</h1>
     </div>
   );
 }

@@ -55,9 +55,9 @@ function EmployeeDetail() {
 
   return (
     <>
-      <div>EmployeeDetail for employee ID: {id}</div>
+      <h2 className="text-center">Employee Detail ID: {id}</h2>
 
-      <div className="mb-3 row">
+      <div className="mb-2 row">
         <label htmlFor="staticName" className="col-sm-2 col-form-label">
           Name
         </label>
@@ -73,7 +73,7 @@ function EmployeeDetail() {
           />
         </div>
       </div>
-      <div className="mb-3 row">
+      <div className="mb-2 row">
         <label className="col-sm-2 col-form-label">Department</label>
         <div className="col-sm-10">
           <select
@@ -92,7 +92,7 @@ function EmployeeDetail() {
           </select>
         </div>
       </div>
-      <div className="mb-3 row">
+      <div className="mb-2 row">
         <label htmlFor="staticSalary" className="col-sm-2 col-form-label">
           Salary
         </label>
@@ -112,19 +112,17 @@ function EmployeeDetail() {
 
       {readOnly ? (
         <button
-          className="btn btn-warning me-2"
+          className="btn btn-sm btn-outline-warning me-2"
           onClick={() => setReadOnly(false)}
         >
           Edit
         </button>
       ) : (
-        <button className="btn btn-success me-2" onClick={handleSave}>
+        <button className="btn btn-sm btn-outline-success me-2" onClick={handleSave}>
           Save
         </button>
       )}
-      <button className="btn btn-info" onClick={() => navigate("/")}>
-        Home
-      </button>
+
     </>
   );
 }

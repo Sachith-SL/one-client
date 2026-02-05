@@ -24,7 +24,7 @@ function Register() {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <h2>Register</h2>
+        <h2 className="text-center">Register</h2>
 
 
         <div className="mb-3">
@@ -52,8 +52,8 @@ function Register() {
           />
         </div>
 
-        <button className="btn btn-info" type="submit">
-          Login
+        <button className="btn btn-sm btn-outline-success" type="submit">
+          Register
         </button>
       </form>
     </>

@@ -32,7 +32,7 @@ function Login() {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2 className="text-center">Login</h2>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
         <div className="mb-3">
@@ -60,7 +60,7 @@ function Login() {
           />
         </div>
 
-        <button className="btn btn-info" type="submit">
+        <button className="btn btn-sm btn-outline-primary" type="submit">
           Login
         </button>
       </form>

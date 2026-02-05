@@ -4,11 +4,15 @@ import type { Employee } from "../types/Employee";
 import { deleteEmployee, getAllEmployees } from "../services/EmployeeService";
 import { getAllDepartments } from "../services/DepartmentService";
 import type { Department } from "../types/Department";
+import { useAuth } from "../context/AuthContext";
 
 function EmployeeList() {
   const navigate = useNavigate();
   const [employeeList, setEmployeeList] = useState<Employee[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
+  const { roles } = useAuth();
+
+  const isAdmin = roles.includes("ROLE_ADMIN");
 
   useEffect(() => {
     try {
@@ -49,7 +53,7 @@ function EmployeeList() {
 
   return (
     <>
-      <div>EmployeeList</div>
+      <h2 className="text-center">EmployeeList</h2>
 
       <table className="table table-hover">
         <thead>
@@ -58,8 +62,12 @@ function EmployeeList() {
             <th scope="col">name</th>
             <th scope="col">Department Name</th>
             <th scope="col">Salary</th>
-            <th scope="col">Details</th>
-            <th scope="col">Delete</th>
+            {isAdmin && (
+              <>
+                <th scope="col">Details</th>
+                <th scope="col">Delete</th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -69,24 +77,28 @@ function EmployeeList() {
               <td>{employee.name}</td>
               <td>{departmentMap[employee.departmentId] ?? "N/A"}</td>
               <td>{employee.salary}</td>
-              <td>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => navigate(`/employee/${employee.id}`)}
-                >
-                  Details
-                </button>
-              </td>
-              <td>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => {
-                    deleteEmp(employee.id);
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
+              {isAdmin && (
+                <>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-outline-info"
+                      onClick={() => navigate(`/employee/${employee.id}`)}
+                    >
+                      Details
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => {
+                        deleteEmp(employee.id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>

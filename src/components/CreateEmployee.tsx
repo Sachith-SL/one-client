@@ -54,9 +54,9 @@ function CreateEmployee() {
     <>
       <div className="card">
         <div className="card-body">
-          <div>Create Employee</div>
+          <h2 className="text-center">Create Employee</h2>
 
-          <div className="mb-3">
+          <div className="mb-2">
             <label>Name</label>
             <input
               type="text"
@@ -68,7 +68,7 @@ function CreateEmployee() {
           </div>
 
           {/* DEPARTMENT DROPDOWN */}
-          <div className="mb-3">
+          <div className="mb-2">
             <label>Department</label>
             <select
               name="departmentId"
@@ -86,7 +86,7 @@ function CreateEmployee() {
           </div>
 
           {/* SALARY */}
-          <div className="mb-3">
+          <div className="mb-2">
             <label>Salary</label>
             <input
               type="number"
@@ -96,11 +96,11 @@ function CreateEmployee() {
               onChange={handleChange}
             />
             {/* BUTTON */}
-            <button className="btn btn-success me-2" onClick={handleSubmit}>
+            <button className="btn btn-sm btn-outline-success mt-2 me-2" onClick={handleSubmit}>
               Create Employee
             </button>
 
-            <button className="btn btn-secondary" onClick={() => navigate("/")}>
+            <button className="btn btn-sm btn-outline-secondary mt-2" onClick={() => navigate("/")}>
               Cancel
             </button>
           </div>
