@@ -39,6 +39,9 @@ const NavBar = () => {
                 </Link>
               </>
             )}
+            {isAdmin && <Link 
+            className="btn text-warning btn-sm btn-outline"
+            to="/admin/users">Manage Users</Link>}
           </div>
 
           <div className="d-flex">

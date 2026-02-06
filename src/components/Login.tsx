@@ -17,9 +17,9 @@ function Login() {
       const response = await loginApi({ username, password });
 
       // Store JWT
-      // localStorage.setItem("token", response.token);
+      // localStorage.setItem("accessToken", response.accessToken);
 
-      login(response.token);
+      login(response.accessToken, response.refreshToken);
 
       // redirect or load protected page
       alert("Login successful!");

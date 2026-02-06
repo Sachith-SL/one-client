@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUserRoles } from "../utils/jwt";
+import { getUserRoles, isTokenExpired } from "../utils/jwt";
 
 type AuthContextType = {
   isLoggedIn: boolean;
   roles: string[];
-  login: (token: string) => void;
+  login: (accessToken: string, refreshToken: string) => void;
   logout: () => void;
 };
 
@@ -16,19 +16,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Runs once when app loads
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-    setRoles(token ? getUserRoles() : []);
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    if (accessToken && !isTokenExpired()) {
+      // Access token is valid
+      setIsLoggedIn(true);
+      setRoles(getUserRoles());
+    } else if (refreshToken) {
+      // Access token expired but refresh token exists → stay logged in
+      // The axios interceptor will handle refreshing on the next API call
+      setIsLoggedIn(true);
+      setRoles(getUserRoles());
+    } else {
+      // No tokens at all → logged out
+      setIsLoggedIn(false);
+      setRoles([]);
+    }
   }, []);
 
-  const login = (token: string) => {
-    localStorage.setItem("token", token);
+  const login = (accessToken: string, refreshToken: string) => {
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+    
     setIsLoggedIn(true);
     setRoles(getUserRoles());
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     setIsLoggedIn(false);
     setRoles([]);
   };

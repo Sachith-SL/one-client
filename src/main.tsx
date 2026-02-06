@@ -11,6 +11,8 @@ import Login from "./components/Login.tsx";
 import Register from "./components/Register.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { ProtectedRoute } from "./routes/ProtectedRoute.tsx";
+import AdminUsersPage from "./components/admin/AdminUsersPage.tsx";
+import { AdminRoute } from "./routes/AdminRoute.tsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +49,12 @@ const router = createBrowserRouter([
             path: "/create-employee",
             element: <CreateEmployee />,
           },
+
+          // 🔐 Admin-only routes
+          {
+            element: <AdminRoute />,
+            children: [{ path: "/admin/users", element: <AdminUsersPage /> }],
+          },
         ],
       },
     ],
@@ -54,9 +62,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  </React.StrictMode>,
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>,
 );

@@ -6,10 +6,13 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  token: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
-export const loginApi = async (request: LoginRequest): Promise<LoginResponse> => {
+export const loginApi = async (
+  request: LoginRequest,
+): Promise<LoginResponse> => {
   const res = await axiosInstance.post<LoginResponse>("/auth/login", request);
 
   return res.data;
