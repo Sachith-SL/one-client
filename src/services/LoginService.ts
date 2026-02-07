@@ -7,13 +7,19 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   accessToken: string;
-  refreshToken: string;
 }
 
 export const loginApi = async (
   request: LoginRequest,
 ): Promise<LoginResponse> => {
-  const res = await axiosInstance.post<LoginResponse>("/auth/login", request);
-
+  const res = await axiosInstance.post<LoginResponse>(
+    "/auth/login",
+    request,
+    { withCredentials: true }, // Include cookies — backend sets refresh token as httpOnly cookie
+  );
   return res.data;
+};
+
+export const logoutApi = async () => {
+  await axiosInstance.post("/auth/logout");
 };

@@ -15,6 +15,10 @@ const refreshClient = axios.create({
   },
 });
 
+// ✅ MUST be set HERE (global default)
+axiosInstance.defaults.withCredentials = true;
+refreshClient.defaults.withCredentials = true;
+
 // Add a request interceptor to include the accessToken in headers
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -47,22 +51,10 @@ axiosInstance.interceptors.response.use(
       // Mark request so we don't retry it infinitely
       originalRequest._retry = true;
 
-      // Step 2: Get refresh token from storage
-      const refreshToken = localStorage.getItem("refreshToken");
-
-      // Step 3: If no refresh token exists, redirect to login
-      if (!refreshToken) {
-        localStorage.removeItem("accessToken");
-        window.location.href = "/login";
-        return Promise.reject(error);
-      }
-
       try {
         // Step 4: Call refresh endpoint to get a new access token
         const res = await refreshClient.post("/auth/refresh", null, {
-          headers: {
-            Authorization: `Bearer ${refreshToken}`,
-          },
+          withCredentials: true, // Include cookies if refresh token is stored in httpOnly cookie
         });
 
         // Step 5: Extract new access token from response
@@ -83,7 +75,6 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError) {
         // Step 8: If refresh also fails, clear tokens and redirect to login
         localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
         window.location.href = "/login";
         return Promise.reject(refreshError);
       }

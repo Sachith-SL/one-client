@@ -19,7 +19,7 @@ function Login() {
       // Store JWT
       // localStorage.setItem("accessToken", response.accessToken);
 
-      login(response.accessToken, response.refreshToken);
+      login(response.accessToken);
 
       // redirect or load protected page
       alert("Login successful!");

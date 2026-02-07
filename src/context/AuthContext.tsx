@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUserRoles, isTokenExpired } from "../utils/jwt";
+import { logoutApi } from "../services/LoginService";
 
 type AuthContextType = {
   isLoggedIn: boolean;
   roles: string[];
-  login: (accessToken: string, refreshToken: string) => void;
+  login: (accessToken: string) => void;
   logout: () => void;
 };
 
@@ -17,35 +18,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Runs once when app loads
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = localStorage.getItem("refreshToken");
 
     if (accessToken && !isTokenExpired()) {
       // Access token is valid
       setIsLoggedIn(true);
       setRoles(getUserRoles());
-    } else if (refreshToken) {
-      // Access token expired but refresh token exists → stay logged in
-      // The axios interceptor will handle refreshing on the next API call
+    } else if (accessToken) {
+      // Access token expired but HttpOnly refresh cookie may exist
+      // Stay logged in — the interceptor will handle refreshing
       setIsLoggedIn(true);
       setRoles(getUserRoles());
     } else {
-      // No tokens at all → logged out
+      // No access token at all → logged out
       setIsLoggedIn(false);
       setRoles([]);
     }
   }, []);
 
-  const login = (accessToken: string, refreshToken: string) => {
+  const login = (accessToken: string,) => {
     localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
     
     setIsLoggedIn(true);
     setRoles(getUserRoles());
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await logoutApi(); // Tell backend to clear the HttpOnly refresh cookie
+    } catch (error) {
+      console.error("Logout API failed:", error);
+    }
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
     setIsLoggedIn(false);
     setRoles([]);
   };
