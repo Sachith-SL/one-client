@@ -1,9 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUserRoles, isTokenExpired } from "../utils/jwt";
+import { getUsername, getUserRoles, isTokenExpired } from "../utils/jwt";
 import { logoutApi } from "../services/LoginService";
 
 type AuthContextType = {
   isLoggedIn: boolean;
+  username: string;
   roles: string[];
   login: (accessToken: string) => void;
   logout: () => void;
@@ -13,6 +14,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
   const [roles, setRoles] = useState<string[]>([]);
 
   // Runs once when app loads
@@ -20,25 +22,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const accessToken = localStorage.getItem("accessToken");
 
     if (accessToken && !isTokenExpired()) {
-      // Access token is valid
       setIsLoggedIn(true);
+      setUsername(getUsername());
       setRoles(getUserRoles());
     } else if (accessToken) {
-      // Access token expired but HttpOnly refresh cookie may exist
-      // Stay logged in — the interceptor will handle refreshing
       setIsLoggedIn(true);
+      setUsername(getUsername());
       setRoles(getUserRoles());
     } else {
-      // No access token at all → logged out
       setIsLoggedIn(false);
+      setUsername("");
       setRoles([]);
     }
   }, []);
 
-  const login = (accessToken: string,) => {
+  const login = (accessToken: string) => {
     localStorage.setItem("accessToken", accessToken);
-    
     setIsLoggedIn(true);
+    setUsername(getUsername());
     setRoles(getUserRoles());
   };
 
@@ -50,11 +51,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     localStorage.removeItem("accessToken");
     setIsLoggedIn(false);
+    setUsername("");
     setRoles([]);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, roles, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, username, roles, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

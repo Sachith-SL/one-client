@@ -19,6 +19,18 @@ export const getUserRoles = (): string[] => {
   }
 };
 
+export const getUsername = (): string => {
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) return "";
+
+  try {
+    const decoded = jwtDecode<JwtPayload>(accessToken);
+    return decoded.sub || "";
+  } catch {
+    return "";
+  }
+};
+
 
 export const isTokenExpired = (): boolean => {
   const accessToken = localStorage.getItem("accessToken");

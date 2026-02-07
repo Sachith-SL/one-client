@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 const NavBar = () => {
   const navigate = useNavigate();
 
-  const { isLoggedIn, roles, logout } = useAuth();
+  const { isLoggedIn, username, roles, logout } = useAuth();
 
   const isAdmin = roles.includes("ROLE_ADMIN");
 
@@ -44,15 +44,18 @@ const NavBar = () => {
             to="/admin/users">Manage Users</Link>}
           </div>
 
-          <div className="d-flex">
+          <div className="d-flex align-items-center">
             {isLoggedIn ? (
-              <button
-                className="btn text-danger btn-outline"
-                type="submit"
-                onClick={logout}
-              >
-                Logout
-              </button>
+              <>
+                <span className="me-2 fw-semibold">👤 {username}</span>
+                <button
+                  className="btn text-danger btn-outline"
+                  type="submit"
+                  onClick={logout}
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <>
                 <button
