@@ -1,4 +1,9 @@
 import axios, { AxiosError } from "axios";
+import {
+  clearAccessToken,
+  getAccessToken,
+  setAccessToken,
+} from "../utils/token";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8080/api/one/v1",
@@ -22,7 +27,7 @@ refreshClient.defaults.withCredentials = true;
 // Add a request interceptor to include the accessToken in headers
 axiosInstance.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = getAccessToken();
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -66,7 +71,7 @@ axiosInstance.interceptors.response.use(
         }
 
         // Step 6: Save new access token to storage
-        localStorage.setItem("accessToken", newAccessToken);
+        setAccessToken(newAccessToken);
 
         // Step 7: Retry the original failed request with the new token
         originalRequest.headers = originalRequest.headers ?? {};
@@ -74,7 +79,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         // Step 8: If refresh also fails, clear tokens and redirect to login
-        localStorage.removeItem("accessToken");
+        clearAccessToken();
         window.location.href = "/login";
         return Promise.reject(refreshError);
       }

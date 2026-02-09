@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-
+import { getAccessToken } from "./token";
 
 type JwtPayload = {
   sub: string;
@@ -8,7 +8,7 @@ type JwtPayload = {
 };
 
 export const getUserRoles = (): string[] => {
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = getAccessToken();
   if (!accessToken) return [];
 
   try {
@@ -20,7 +20,7 @@ export const getUserRoles = (): string[] => {
 };
 
 export const getUsername = (): string => {
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = getAccessToken();
   if (!accessToken) return "";
 
   try {
@@ -31,12 +31,10 @@ export const getUsername = (): string => {
   }
 };
 
-
 export const isTokenExpired = (): boolean => {
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = getAccessToken();
   if (!accessToken) return true;
 
   const decoded = jwtDecode<JwtPayload>(accessToken);
   return decoded.exp * 1000 < Date.now();
 };
-

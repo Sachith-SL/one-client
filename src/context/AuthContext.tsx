@@ -1,5 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUsername, getUserRoles, isTokenExpired } from "../utils/jwt";
+import {
+  clearAccessToken,
+  getAccessToken,
+  setAccessToken,
+} from "../utils/token";
 import { logoutApi } from "../services/LoginService";
 
 type AuthContextType = {
@@ -19,7 +24,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Runs once when app loads
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = getAccessToken();
 
     if (accessToken && !isTokenExpired()) {
       setIsLoggedIn(true);
@@ -37,7 +42,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = (accessToken: string) => {
-    localStorage.setItem("accessToken", accessToken);
+    setAccessToken(accessToken);
     setIsLoggedIn(true);
     setUsername(getUsername());
     setRoles(getUserRoles());
@@ -49,14 +54,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       console.error("Logout API failed:", error);
     }
-    localStorage.removeItem("accessToken");
+    clearAccessToken();
     setIsLoggedIn(false);
     setUsername("");
     setRoles([]);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, username, roles, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, username, roles, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
