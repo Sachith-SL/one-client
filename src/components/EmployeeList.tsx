@@ -55,54 +55,56 @@ function EmployeeList() {
     <>
       <h2 className="text-center">EmployeeList</h2>
 
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">name</th>
-            <th scope="col">Department Name</th>
-            <th scope="col">Salary</th>
-            {isAdmin && (
-              <>
-                <th scope="col">Details</th>
-                <th scope="col">Delete</th>
-              </>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {employeeList.map((employee) => (
-            <tr key={employee.id}>
-              <th scope="row">{employee.id}</th>
-              <td>{employee.name}</td>
-              <td>{departmentMap[employee.departmentId] ?? "N/A"}</td>
-              <td>{employee.salary}</td>
+      <div className="table-responsive">
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">name</th>
+              <th scope="col">Department Name</th>
+              <th scope="col">Salary</th>
               {isAdmin && (
                 <>
-                  <td>
-                    <button
-                      className="btn btn-sm btn-outline-info"
-                      onClick={() => navigate(`/employee/${employee.id}`)}
-                    >
-                      Details
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => {
-                        deleteEmp(employee.id);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
+                  <th scope="col">Details</th>
+                  <th scope="col">Delete</th>
                 </>
               )}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {employeeList.map((employee) => (
+              <tr key={employee.id}>
+                <th scope="row">{employee.id}</th>
+                <td>{employee.name}</td>
+                <td>{departmentMap[employee.departmentId] ?? "N/A"}</td>
+                <td>{employee.salary}</td>
+                {isAdmin && (
+                  <>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-outline-info"
+                        onClick={() => navigate(`/employee/${employee.id}`)}
+                      >
+                        Details
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => {
+                          deleteEmp(employee.id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

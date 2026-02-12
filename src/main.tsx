@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import React from "react";
 import Home from "./components/Home.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import EmployeeList from "./components/EmployeeList.tsx";
 import EmployeeDetail from "./components/EmployeeDetail.tsx";
 import CreateEmployee from "./components/CreateEmployee.tsx";

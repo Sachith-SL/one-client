@@ -52,57 +52,67 @@ function CreateEmployee() {
 
   return (
     <>
-      <div className="card">
-        <div className="card-body">
-          <h2 className="text-center">Create Employee</h2>
+      <div className="row justify-content-center">
+        <div className="col-12 col-sm-10 col-md-8 col-lg-6">
+          <div className="card">
+            <div className="card-body">
+              <h2 className="text-center">Create Employee</h2>
 
-          <div className="mb-2">
-            <label>Name</label>
-            <input
-              type="text"
-              name="name"
-              className="form-control"
-              value={form.name}
-              onChange={handleChange}
-            />
-          </div>
+              <div className="mb-2">
+                <label>Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  className="form-control"
+                  value={form.name}
+                  onChange={handleChange}
+                />
+              </div>
 
-          {/* DEPARTMENT DROPDOWN */}
-          <div className="mb-2">
-            <label>Department</label>
-            <select
-              name="departmentId"
-              className="form-control"
-              value={form.departmentId}
-              onChange={handleChange}
-            >
-              <option value="">-- Select Department --</option>
-              {departments.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name}
-                </option>
-              ))}
-            </select>
-          </div>
+              {/* DEPARTMENT DROPDOWN */}
+              <div className="mb-2">
+                <label>Department</label>
+                <select
+                  name="departmentId"
+                  className="form-control"
+                  value={form.departmentId}
+                  onChange={handleChange}
+                >
+                  <option value="">-- Select Department --</option>
+                  {departments.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-          {/* SALARY */}
-          <div className="mb-2">
-            <label>Salary</label>
-            <input
-              type="number"
-              name="salary"
-              className="form-control"
-              value={form.salary}
-              onChange={handleChange}
-            />
-            {/* BUTTON */}
-            <button className="btn btn-sm btn-outline-success mt-2 me-2" onClick={handleSubmit}>
-              Create Employee
-            </button>
+              {/* SALARY */}
+              <div className="mb-2">
+                <label>Salary</label>
+                <input
+                  type="number"
+                  name="salary"
+                  className="form-control"
+                  value={form.salary}
+                  onChange={handleChange}
+                />
+                {/* BUTTON */}
+                <button
+                  className="btn btn-sm btn-outline-success mt-2 me-2"
+                  onClick={handleSubmit}
+                >
+                  Create Employee
+                </button>
 
-            <button className="btn btn-sm btn-outline-secondary mt-2" onClick={() => navigate("/")}>
-              Cancel
-            </button>
+                <button
+                  className="btn btn-sm btn-outline-secondary mt-2"
+                  onClick={() => navigate("/")}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ type User = {
 };
 
 const AdminUsersPage = () => {
-const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     getAllUsers().then(setUsers);
@@ -19,41 +19,48 @@ const [users, setUsers] = useState<User[]>([]);
     alert("Role updated");
   };
   return (
-        <div>
+    <div>
       <h2>User Management</h2>
 
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Roles</th>
-            <th>Assign Role</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.username}</td>
-              <td>{user.roles.join(", ")}</td>
-              <td>
-                <select className="btn btn-sm btn-outline"
-                  onChange={(e) =>
-                    handleRoleChange(user.id, e.target.value)
-                  }
-                  defaultValue=""
-                >
-                  <option className="dropdown-item" value="" disabled>Select</option>
-                  <option className="dropdown-item" value="USER">USER</option>
-                  <option className="dropdown-item" value="ADMIN">ADMIN</option>
-                </select>
-              </td>
+      <div className="table-responsive">
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Roles</th>
+              <th>Assign Role</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
+          </thead>
 
-export default AdminUsersPage
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.username}</td>
+                <td>{user.roles.join(", ")}</td>
+                <td>
+                  <select
+                    className="btn btn-sm btn-outline"
+                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                    defaultValue=""
+                  >
+                    <option className="dropdown-item" value="" disabled>
+                      Select
+                    </option>
+                    <option className="dropdown-item" value="USER">
+                      USER
+                    </option>
+                    <option className="dropdown-item" value="ADMIN">
+                      ADMIN
+                    </option>
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default AdminUsersPage;
