@@ -1,16 +1,15 @@
 import axiosInstance from "../api/axiosinstance";
 
 //get all employees
-export const getAllEmployeesApi = () => {
-  return axiosInstance
-    .get(`/employee`)
-    .then((response: any) => {
-      return response.data.data.content;
-    })
-    .catch((error: any) => {
-      console.error("Error fetching employees:", error);
-      throw error;
-    });
+export const getAllEmployeesApi = async () => {
+  try {
+        const response = await axiosInstance
+            .get(`/employee`);
+        return response.data.data.content;
+    } catch (error) {
+        console.error("Error fetching employees:", error);
+        throw error;
+    }
 };
 
 //get employee by id
