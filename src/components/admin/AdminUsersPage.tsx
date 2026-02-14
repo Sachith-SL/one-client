@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { assignRole, getAllUsers } from "../../services/AdminService";
+import { assignRoleApi, getAllUsersApi } from "../../services/AdminService";
 
 type User = {
   id: number;
@@ -11,11 +11,11 @@ const AdminUsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    getAllUsers().then(setUsers);
+    getAllUsersApi().then(setUsers);
   }, []);
 
   const handleRoleChange = async (userId: number, role: string) => {
-    await assignRole(userId, role);
+    await assignRoleApi(userId, role);
     alert("Role updated");
   };
   return (

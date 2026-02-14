@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getWelcomeMessage } from "../services/HomeService";
+import { getWelcomeMessageApi } from "../services/HomeService";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
@@ -8,7 +8,7 @@ function Home() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getWelcomeMessage()
+    getWelcomeMessageApi()
       .then((data: string) => {
         setMessage(data);
         setLoading(false);

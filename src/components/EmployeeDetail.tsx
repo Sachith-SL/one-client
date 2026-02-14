@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getEmployeeById, updateEmployee } from "../services/EmployeeService";
+import {
+  getEmployeeByIdApi,
+  updateEmployeeApi,
+} from "../services/EmployeeService";
 import type { Employee } from "../types/Employee";
 import type { Department } from "../types/Department";
-import { getAllDepartments } from "../services/DepartmentService";
+import { getAllDepartmentsApi } from "../services/DepartmentService";
 
 function EmployeeDetail() {
   const navigate = useNavigate();
@@ -16,12 +19,12 @@ function EmployeeDetail() {
     // Fetch employee details using the id
     try {
       const fetchDepartments = async () => {
-        const res = await getAllDepartments();
+        const res = await getAllDepartmentsApi();
         setDepartments(res);
       };
 
       const fetchEmployee = async () => {
-        const data = await getEmployeeById(id as any);
+        const data = await getEmployeeByIdApi(id as any);
         setEmployee(data);
       };
 
@@ -45,7 +48,7 @@ function EmployeeDetail() {
     if (!employee) return;
 
     try {
-      await updateEmployee(employee.id, employee);
+      await updateEmployeeApi(employee.id, employee);
       setReadOnly(true);
       alert("Employee updated successfully");
     } catch (error) {

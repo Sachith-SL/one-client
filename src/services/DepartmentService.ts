@@ -1,7 +1,7 @@
 import axiosInstance from "../api/axiosinstance";
 
 //get all departments
-export const getAllDepartments = () => {
+export const getAllDepartmentsApi = () => {
   return axiosInstance
     .get(`/department`)
     .then((response: any) => {

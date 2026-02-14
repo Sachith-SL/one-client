@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import type { Department } from "../types/Department";
 import { useEffect, useState } from "react";
 import type { EmployeeRequest } from "../types/EmployeeRequest";
-import { getAllDepartments } from "../services/DepartmentService";
-import { createEmployee } from "../services/EmployeeService";
+import { getAllDepartmentsApi } from "../services/DepartmentService";
+import { createEmployeeApi } from "../services/EmployeeService";
 
 function CreateEmployee() {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function CreateEmployee() {
     // Fetch departments for the dropdown
     try {
       const fetchDepartments = async () => {
-        const res = await getAllDepartments();
+        const res = await getAllDepartmentsApi();
         setDepartments(res);
       };
       fetchDepartments();
@@ -37,7 +37,7 @@ function CreateEmployee() {
 
   const handleSubmit = async () => {
     try {
-      await createEmployee({
+      await createEmployeeApi({
         ...form,
         name: String(form.name),
         salary: Number(form.salary),
@@ -59,10 +59,11 @@ function CreateEmployee() {
               <h2 className="text-center">Create Employee</h2>
 
               <div className="mb-2">
-                <label>Name</label>
+                <label htmlFor="name">Name</label>
                 <input
                   type="text"
                   name="name"
+                  id="name"
                   className="form-control"
                   value={form.name}
                   onChange={handleChange}
@@ -71,9 +72,10 @@ function CreateEmployee() {
 
               {/* DEPARTMENT DROPDOWN */}
               <div className="mb-2">
-                <label>Department</label>
+                <label htmlFor="departmentId">Department</label>
                 <select
                   name="departmentId"
+                  id="departmentId"
                   className="form-control"
                   value={form.departmentId}
                   onChange={handleChange}
@@ -89,10 +91,11 @@ function CreateEmployee() {
 
               {/* SALARY */}
               <div className="mb-2">
-                <label>Salary</label>
+                <label htmlFor="salary">Salary</label>
                 <input
                   type="number"
                   name="salary"
+                  id="salary"
                   className="form-control"
                   value={form.salary}
                   onChange={handleChange}

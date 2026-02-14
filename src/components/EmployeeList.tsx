@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Employee } from "../types/Employee";
-import { deleteEmployee, getAllEmployees } from "../services/EmployeeService";
-import { getAllDepartments } from "../services/DepartmentService";
+import {
+  deleteEmployeeApi,
+  getAllEmployeesApi,
+} from "../services/EmployeeService";
+import { getAllDepartmentsApi } from "../services/DepartmentService";
 import type { Department } from "../types/Department";
 import { useAuth } from "../context/AuthContext";
 
@@ -17,11 +20,11 @@ function EmployeeList() {
   useEffect(() => {
     try {
       const fetchEmployeeData = async () => {
-        const data = await getAllEmployees();
+        const data = await getAllEmployeesApi();
         setEmployeeList(data);
       };
       const fetchDepartments = async () => {
-        const res = await getAllDepartments();
+        const res = await getAllDepartmentsApi();
         setDepartments(res);
       };
       fetchDepartments();
@@ -41,10 +44,10 @@ function EmployeeList() {
 
   const deleteEmp = async (id: number) => {
     try {
-      await deleteEmployee(id);
+      await deleteEmployeeApi(id);
       alert("Employee deleted successfully");
       // Refresh the employee list after deletion
-      const data = await getAllEmployees();
+      const data = await getAllEmployeesApi();
       setEmployeeList(data);
     } catch (error) {
       alert("Error deleting employee");

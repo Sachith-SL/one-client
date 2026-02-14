@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../services/RegisterService";
+import { registerApi } from "../services/RegisterService";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -11,7 +11,7 @@ function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await register(username, password);
+      await registerApi(username, password);
 
       // redirect or load protected page
       alert("Registration successful!");

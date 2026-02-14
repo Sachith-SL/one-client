@@ -1,7 +1,6 @@
-import axiosInstance from "../api/axiosinstance"
+import axiosInstance from "../api/axiosinstance";
 
-
-export const getWelcomeMessage = async () => {
+export const getWelcomeMessageApi = async () => {
   try {
     const response = await axiosInstance.get(`/health`);
     return response.data;
